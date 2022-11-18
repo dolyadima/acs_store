@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/pgdata/
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/pgdata/
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    image: acs_store-web
+    restart: always
+    volumes:
+      - .:/src
+      - static:/static
+      - media:/media
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+        PY_AUTORELOAD: 1
+    command: "runserver 0.0.0.0:8000"
+
+  nginx:
+    image: nginx:1.23.2-alpine
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - static:/static:ro
+      - media:/media:ro
+    links:
+      - web
+    ports:
+      - "80:80"
+
+volumes:
+  pgdata: { }
+  static: { }
+  media: { }
