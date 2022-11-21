@@ -12,9 +12,7 @@ class ProductListView(ListView):
         context["page_title"] = "Product List"
         return context
 
+
 class SalesListView(ListView):
     model = Sale
     template_name = "products/sales_list.html"
-
-    def get_queryset(self):
-        return super().get_queryset()
