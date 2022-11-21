@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table style="border: 1px solid black; border-collapse: collapse;">
+    <tr>
+        <th style="border: 1px solid black;">#</th>
+        <th style="border: 1px solid black;">Date</th>
+        <th style="border: 1px solid black;">Product</th>
+        <th style="border: 1px solid black;">Amount</th>
+        <th style="border: 1px solid black;">Price</th>
+    </tr>
+    {% for sale in object_list %}
+    <tr>
+        <td style="border: 1px solid black;">{{forloop.counter}}</td>
+        <td style="border: 1px solid black;">{{sale.date_time}}</td>
+        <td style="border: 1px solid black;">{{sale.product}}</td>
+        <td style="border: 1px solid black;">{{sale.amount}}</td>
+        <td style="border: 1px solid black;">{{sale.price}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
