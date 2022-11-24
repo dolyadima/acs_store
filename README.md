@@ -13,6 +13,18 @@ git clone https://github.com/dolyadima/acs_store.git
 cp .env.example .env
 ```
 
+**Set environment for dev:**
+
+```
+cp .env.dev .env
+```
+
+**Install requirements.txt:**
+
+```
+pip install -r requirements.txt
+```
+
 **Build and run containers:**
 
 ```
