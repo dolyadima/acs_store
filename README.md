@@ -19,6 +19,17 @@ cp .env.example .env
 python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 ```
 
+**Example for .env**
+
+```
+SECRET_KEY=django-insecure-961vm22w-74^74%7dn=7m0-__8cr9)dhi#-2+pcjyl@@u_dz=i
+DEBUG=True
+POSTGRES_DB=db
+POSTGRES_USER=user
+POSTGRES_PASSWORD=961vm22w
+SITE_URL=0.0.0.0
+```
+
 **Install requirements.txt:**
 
 ```
