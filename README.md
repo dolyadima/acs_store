@@ -13,10 +13,10 @@ git clone https://github.com/dolyadima/acs_store.git
 cp .env.example .env
 ```
 
-**Set environment for dev:**
+**Generating a SECRET_KEY using the terminal**
 
 ```
-cp .env.dev .env
+python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 ```
 
 **Install requirements.txt:**
