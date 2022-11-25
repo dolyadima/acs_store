@@ -22,7 +22,7 @@ python3 -c 'from django.core.management.utils import get_random_secret_key; prin
 **Example for .env**
 
 ```
-SECRET_KEY=django-insecure-961vm22w-74^74%7dn=7m0-__8cr9)dhi#-2+pcjyl@@u_dz=i
+SECRET_KEY= see paragraph Generating a SECRET_KEY using the terminal
 DEBUG=True
 POSTGRES_DB=db
 POSTGRES_USER=user
