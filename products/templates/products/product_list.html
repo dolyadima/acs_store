@@ -23,4 +23,22 @@
     {% endfor %}
 </table>
 </div>
+<div>
+    <hr>
+    <form method="GET">
+        {{ form.as_p }}
+    <input type="submit" value="OK">
+</form>
+</div>
+<div>
+    <hr>
+    <table>
+        {% for prod in products %}
+        <tr>
+            <td>{{ prod.title }}</td>
+            <td>{{ prod.price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}

@@ -1,16 +1,26 @@
 from django.urls import reverse
 from django.views.generic import ListView, CreateView
 
+from .filters import ProductFilter
 from .models import Product, Sale
 
 
 class ProductListView(ListView):
+    queryset = Product.objects.all()
     template_name = "products/product_list.html"
     model = Product
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = ProductFilter(self.request.GET, queryset=queryset)
+        return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
         context["page_title"] = "Product List"
+        context["form"] = self.filterset.form
+        context["object_list"] = Product.objects.all()
         return context
 
 
@@ -26,3 +36,6 @@ class SaleCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('products:sales-list')
+
+
+
