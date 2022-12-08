@@ -1,8 +1,8 @@
 from django.urls import reverse
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, TemplateView
 
 from .filters import ProductFilter
-from .models import Product, Sale
+from .models import Product, Sale, Category, Shop
 
 
 class ProductListView(ListView):
@@ -24,9 +24,27 @@ class ProductListView(ListView):
         return context
 
 
-class SalesListView(ListView):
-    model = Sale
+class SalesListView(TemplateView):
     template_name = "products/sales_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['categories'] = Category.objects.all()
+        context['shops'] = Shop.objects.all()
+        sales = Sale.objects.all()
+
+        sale_cat_form_select = self.request.GET.get('sale_cat', '')
+        sale_shop_form_select = self.request.GET.get('sale_shop', '')
+
+        if sale_cat_form_select and sale_cat_form_select != '-1':
+            sales = sales.filter(product__category_id=sale_cat_form_select)
+        if sale_shop_form_select and sale_shop_form_select != '-1':
+            sales = sales.filter(product__shop_id=sale_shop_form_select)
+
+        context['sales'] = sales
+
+        return context
 
 
 class SaleCreateView(CreateView):
