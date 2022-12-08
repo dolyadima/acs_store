@@ -7,28 +7,3 @@
     margin-top: 20px;
 }
 /* endblock global */
-
-/* block base/header.html */
-.custom-header-navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #f00; /* #f0f8f8 */
-}
-
-.custom-header-navbar li {
-    float: left;
-}
-
-.custom-header-navbar li a {
-    display: block;
-    color: #0f0; /* white */
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-.custom-header-navbar li a:hover {
-    background-color: #00f; /* #fafaff */
-}
-/* endblock base/header.html */
