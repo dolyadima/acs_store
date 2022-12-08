@@ -1,20 +1,20 @@
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{% url 'products:product-list' %}">Acs Store</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'products:product-list' %}">Products</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'products:sales-list' %}">Sales</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'products:sale-create' %}">Create Sale</a>
-      </li>
-    </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">ACS STORE</a>
+
+    <div class="collapse navbar-collapse" id="navbarsExample07">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'products:products-list' %}">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'products:sales-list' %}">Sales</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'products:sale-create' %}">Create Sale</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
