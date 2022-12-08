@@ -5,7 +5,11 @@ from .filters import ProductFilter
 from .models import Product, Sale, Category, Shop
 
 
-class ProductListView(ListView):
+class IndexView(TemplateView):
+    template_name = 'products/index.html'
+
+
+class ProductsListView(ListView):
     queryset = Product.objects.all()
     template_name = "products/product_list.html"
     model = Product
@@ -17,7 +21,7 @@ class ProductListView(ListView):
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
-        context = super(ProductListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["page_title"] = "Product List"
         context["form"] = self.filterset.form
         context["object_list"] = Product.objects.all()
@@ -54,6 +58,3 @@ class SaleCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('products:sales-list')
-
-
-
