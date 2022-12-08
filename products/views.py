@@ -41,10 +41,16 @@ class SalesListView(TemplateView):
         sale_cat_form_select = self.request.GET.get('sale_cat', '')
         sale_shop_form_select = self.request.GET.get('sale_shop', '')
 
-        if sale_cat_form_select and sale_cat_form_select != '-1':
+        context['cat_pk'] = -1
+        context['shop_pk'] = -1
+
+        if sale_cat_form_select.isdigit() and sale_cat_form_select != '-1':
             sales = sales.filter(product__category_id=sale_cat_form_select)
-        if sale_shop_form_select and sale_shop_form_select != '-1':
+            context['cat_pk'] = int(sale_cat_form_select)
+
+        if sale_shop_form_select.isdigit() and sale_shop_form_select != '-1':
             sales = sales.filter(product__shop_id=sale_shop_form_select)
+            context['shop_pk'] = int(sale_shop_form_select)
 
         context['sales'] = sales
 

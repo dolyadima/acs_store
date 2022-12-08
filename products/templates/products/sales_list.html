@@ -10,13 +10,13 @@ Sales
     <select name='sale_cat'>
         <option value='-1'>---</option>
         {% for cat in categories %}
-            <option value='{{ cat.pk }}'>{{ cat.title }}</option>
+            <option value='{{ cat.pk }}' {% if cat_pk == cat.pk %} selected {% endif %}>{{ cat.title }}</option>
         {% endfor %}
     </select>
     <select name='sale_shop'>
         <option value='-1'>---</option>
         {% for shop in shops %}
-            <option value='{{ shop.pk }}' >{{ shop.address }}</option>
+            <option value='{{ shop.pk }}' {% if shop_pk == shop.pk %} selected {% endif %}>{{ shop.address }}</option>
         {% endfor %}
     </select>
     <input type='submit' value='Filter'>
