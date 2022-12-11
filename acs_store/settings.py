@@ -29,8 +29,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'products',
-    'django_filters',
-
 ]
 
 MIDDLEWARE = [
@@ -138,5 +136,3 @@ STATICFILES_FINDERS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_URL = os.getenv("SITE_URL", "")
-
-#FILTERS_DEFAULT_LOOKUP_EXPR = 'icontains'

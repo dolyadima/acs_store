@@ -1,30 +1,36 @@
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, TemplateView
 
-from .filters import ProductFilter
 from .models import Product, Sale, Category, Shop
 
 
 class IndexView(TemplateView):
     template_name = 'products/index.html'
 
-
-class ProductsListView(ListView):
-    queryset = Product.objects.all()
-    template_name = "products/product_list.html"
-    model = Product
-    context_object_name = 'products'
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        self.filterset = ProductFilter(self.request.GET, queryset=queryset)
-        return self.filterset.qs
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_title"] = "Product List"
-        context["form"] = self.filterset.form
-        context["object_list"] = Product.objects.all()
+        print(f'test index inner print 111')
+        return context
+
+
+class ProductsListView(TemplateView):
+    template_name = "products/product_list.html"
+
+    def get_context_data(self, **kwargs):
+        print('hi', 'hi')
+        context = super().get_context_data(**kwargs)
+        products = Product.objects.all()
+        context['categories'] = Category.objects.all()
+        # prod_title = self.request.GET.get('title', '')
+        # category = self.request.GET.get('category', '')
+        # context['category_pk'] = -1
+        print('hello', 'world')
+        # if prod_title != '' or category != -1:
+        #     print('ghgh', prod_title, category, 'djhsdgjh')
+        #     product_set = products.filter(title__icontains=prod_title).filter(category_id=category)
+        #     context['products'] = product_set
+        # else:
+        #     context['products'] = products
         return context
 
 
@@ -32,6 +38,7 @@ class SalesListView(TemplateView):
     template_name = "products/sales_list.html"
 
     def get_context_data(self, **kwargs):
+        print('one', 'two')
         context = super().get_context_data(**kwargs)
 
         context['categories'] = Category.objects.all()
@@ -53,7 +60,7 @@ class SalesListView(TemplateView):
             context['shop_pk'] = int(sale_shop_form_select)
 
         context['sales'] = sales
-
+        print('123123aaa', '123wwwwwq')
         return context
 
 
