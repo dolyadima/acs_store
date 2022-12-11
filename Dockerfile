@@ -1,5 +1,6 @@
 FROM python:3.8.10-slim
 
+ENV PYTHONUNBUFFERED 1
 RUN apt-get update && apt-get upgrade -yq
 
 COPY . /src
