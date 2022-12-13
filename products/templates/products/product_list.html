@@ -7,7 +7,6 @@ Products
 
 {% block content %}
 <div>
-    <hr>
     <form action="." method="GET">
         {{ form.as_p }}
         <label for="id_title">Product:</label>
@@ -17,13 +16,22 @@ Products
         <select name="category">
             <option value='-1'>---</option>
             {% for cat in categories %}
-            <option value='{{ cat.pk }}' {% if category_pk == cat.pk %} selected {% endif %}>{{ cat.title }}</option>
+                <option value='{{ cat.pk }}' {% if category_pk == cat.pk %} selected {% endif %}>{{ cat.title }}</option>
             {% endfor %}
         </select>
-        <input type='submit' value='Filter'>
+        <label>Shop:</label>
+        <select name="shop">
+            <option value='-1'>---</option>
+            {% for shop in shops %}
+                <option value='{{ shop.pk }}' {% if shop_pk == shop.pk %} selected {% endif %}>{{ shop.address }}</option>
+            {% endfor %}
+        </select>
+    <label>Price:</label>
+    <input type=number name="min_price" maxlength="7" size="3"> to <input type=number name="max_price" maxlength="7" size="3">
+    <input type='submit' value='Filter'>
 </form>
 </div>
-
+    <hr>
 <div class="d-flex p-2">
 <table class="table-bordered table-sm">
     <tr>

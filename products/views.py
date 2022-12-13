@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.views.generic import ListView, CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView
 
 from .models import Product, Sale, Category, Shop
 
@@ -9,7 +9,6 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(f'test index inner print 111')
         return context
 
 
@@ -17,20 +16,35 @@ class ProductsListView(TemplateView):
     template_name = "products/product_list.html"
 
     def get_context_data(self, **kwargs):
-        print('hi', 'hi')
         context = super().get_context_data(**kwargs)
         products = Product.objects.all()
         context['categories'] = Category.objects.all()
-        # prod_title = self.request.GET.get('title', '')
-        # category = self.request.GET.get('category', '')
-        # context['category_pk'] = -1
-        print('hello', 'world')
-        # if prod_title != '' or category != -1:
-        #     print('ghgh', prod_title, category, 'djhsdgjh')
-        #     product_set = products.filter(title__icontains=prod_title).filter(category_id=category)
-        #     context['products'] = product_set
-        # else:
-        #     context['products'] = products
+        context['shops'] = Shop.objects.all()
+        prod_title = self.request.GET.get('title', '')
+
+        category = self.request.GET.get('category', '')
+        shop = self.request.GET.get('shop', '')
+
+        context['category_pk'] = -1
+        context['shop_pk'] = -1
+        price1 = self.request.GET.get('min_price', 0.0)
+        price2 = self.request.GET.get('max_price', 0.0)
+
+        if prod_title or category or shop or price1 or price2:
+            product_set = products
+            if prod_title != '':
+                product_set = products.filter(title__icontains=prod_title)
+            if category != '-1':
+                product_set = product_set.filter(category_id=category)
+                context['category_pk'] = int(category)
+            if shop != '-1':
+                product_set = product_set.filter(shop_id=shop)
+                context['shop_pk'] = int(shop)
+            if price2 != '' and price1 != '':
+                product_set = product_set.filter(price__range=(price1, price2))
+            context['products'] = product_set
+        else:
+            context['products'] = products
         return context
 
 
@@ -60,7 +74,6 @@ class SalesListView(TemplateView):
             context['shop_pk'] = int(sale_shop_form_select)
 
         context['sales'] = sales
-        print('123123aaa', '123wwwwwq')
         return context
 
 
