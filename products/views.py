@@ -1,7 +1,6 @@
 from django.urls import reverse
-from django.views.generic import ListView, CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView
 
-from .filters import ProductFilter
 from .models import Product, Sale, Category, Shop
 
 
@@ -9,22 +8,38 @@ class IndexView(TemplateView):
     template_name = 'products/index.html'
 
 
-class ProductsListView(ListView):
-    queryset = Product.objects.all()
+class ProductsListView(TemplateView):
     template_name = "products/product_list.html"
-    model = Product
-    context_object_name = 'products'
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        self.filterset = ProductFilter(self.request.GET, queryset=queryset)
-        return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_title"] = "Product List"
-        context["form"] = self.filterset.form
-        context["object_list"] = Product.objects.all()
+        products = Product.objects.all()
+        context['categories'] = Category.objects.all()
+        context['shops'] = Shop.objects.all()
+        prod_title = self.request.GET.get('title', '')
+
+        category = self.request.GET.get('category', '')
+        shop = self.request.GET.get('shop', '')
+
+        context['category_pk'] = -1
+        context['shop_pk'] = -1
+        price1 = self.request.GET.get('min_price', 0.0)
+        price2 = self.request.GET.get('max_price', 0.0)
+
+        if prod_title or category or shop or price1 or price2:
+            if prod_title != '':
+                products = products.filter(title__icontains=prod_title)
+            if category != '-1':
+                products = products.filter(category_id=category)
+                context['category_pk'] = int(category)
+            if shop != '-1':
+                products = products.filter(shop_id=shop)
+                context['shop_pk'] = int(shop)
+            if price2 != '' and price1 != '':
+                products = products.filter(price__range=(price1, price2))
+            context['products'] = products
+        else:
+            context['products'] = products
         return context
 
 
@@ -53,7 +68,6 @@ class SalesListView(TemplateView):
             context['shop_pk'] = int(sale_shop_form_select)
 
         context['sales'] = sales
-
         return context
 
 
