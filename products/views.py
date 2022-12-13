@@ -7,10 +7,6 @@ from .models import Product, Sale, Category, Shop
 class IndexView(TemplateView):
     template_name = 'products/index.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
 
 class ProductsListView(TemplateView):
     template_name = "products/product_list.html"
@@ -31,18 +27,17 @@ class ProductsListView(TemplateView):
         price2 = self.request.GET.get('max_price', 0.0)
 
         if prod_title or category or shop or price1 or price2:
-            product_set = products
             if prod_title != '':
-                product_set = products.filter(title__icontains=prod_title)
+                products = products.filter(title__icontains=prod_title)
             if category != '-1':
-                product_set = product_set.filter(category_id=category)
+                products = products.filter(category_id=category)
                 context['category_pk'] = int(category)
             if shop != '-1':
-                product_set = product_set.filter(shop_id=shop)
+                products = products.filter(shop_id=shop)
                 context['shop_pk'] = int(shop)
             if price2 != '' and price1 != '':
-                product_set = product_set.filter(price__range=(price1, price2))
-            context['products'] = product_set
+                products = products.filter(price__range=(price1, price2))
+            context['products'] = products
         else:
             context['products'] = products
         return context
@@ -52,7 +47,6 @@ class SalesListView(TemplateView):
     template_name = "products/sales_list.html"
 
     def get_context_data(self, **kwargs):
-        print('one', 'two')
         context = super().get_context_data(**kwargs)
 
         context['categories'] = Category.objects.all()
