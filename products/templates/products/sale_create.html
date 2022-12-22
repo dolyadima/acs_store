@@ -7,10 +7,10 @@ Sale Create
 
 {% block content %}
 <div>
-    <form method="post">
+    <form action="." method="post">
         {% csrf_token %}
         {{ form }}
-        <button type="submit" class="btn btn-success">Save post</button>
+        <button type="submit" class="btn btn-success">Save sale</button>
     </form>
 </div>
 {% endblock %}
