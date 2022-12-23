@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.views.generic import CreateView, TemplateView
+from django.contrib import messages
 
 from .models import Product, Sale, Category, Shop
 
@@ -73,8 +74,19 @@ class SalesListView(TemplateView):
 
 class SaleCreateView(CreateView):
     model = Sale
-    fields = '__all__'
+    fields = ['product', 'amount', 'price']
     template_name = 'products/sale_create.html'
+
+    def form_valid(self, form):
+        product = form.cleaned_data['product']
+        amount = form.cleaned_data['amount']
+        if product.amount >= amount:
+            self.object = form.save()
+            product.amount -= amount
+            product.save()
+            return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('products:sales-list')
