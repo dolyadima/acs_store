@@ -1,6 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import CreateView, TemplateView
-from django.contrib import messages
 
 from .models import Product, Sale, Category, Shop
 
@@ -9,7 +9,7 @@ class IndexView(TemplateView):
     template_name = 'products/index.html'
 
 
-class ProductsListView(TemplateView):
+class ProductsListView(LoginRequiredMixin, TemplateView):
     template_name = "products/product_list.html"
 
     def get_context_data(self, **kwargs):
@@ -44,7 +44,7 @@ class ProductsListView(TemplateView):
         return context
 
 
-class SalesListView(TemplateView):
+class SalesListView(LoginRequiredMixin, TemplateView):
     template_name = "products/sales_list.html"
 
     def get_context_data(self, **kwargs):
@@ -72,7 +72,7 @@ class SalesListView(TemplateView):
         return context
 
 
-class SaleCreateView(CreateView):
+class SaleCreateView(LoginRequiredMixin, CreateView):
     model = Sale
     fields = ['product', 'amount', 'price']
     template_name = 'products/sale_create.html'
