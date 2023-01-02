@@ -19,6 +19,12 @@ Sales
             <option value='{{ shop.pk }}' {% if shop_pk == shop.pk %} selected {% endif %}>{{ shop.address }}</option>
         {% endfor %}
     </select>
+    <select name='sale_user'>
+        <option value='-1'>---</option>
+        {% for user in users %}
+            <option value='{{ user.pk }}' {% if user_pk == user.pk %} selected {% endif %}>{{ user.first_name }} {{ user.last_name }}</option>
+        {% endfor %}
+    </select>
     <input type='submit' value='Filter'>
 </form>
 
@@ -30,6 +36,7 @@ Sales
             <th>Product</th>
             <th>Amount</th>
             <th>Price</th>
+            <th>Seller</th>
         </tr>
         {% for sale in sales %}
         <tr>
@@ -38,6 +45,7 @@ Sales
             <td>{{sale.product}}</td>
             <td>{{sale.amount}}</td>
             <td>{{sale.price}}</td>
+            <td>{{sale.seller.first_name}} {{sale.seller.last_name}}</td>
         </tr>
         {% endfor %}
     </table>
