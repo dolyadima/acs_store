@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import CreateView, TemplateView
 
-from .models import Product, Sale, Category, Shop
+from .models import Product, Sale, Category, Shop, User
 
 
 class IndexView(TemplateView):
@@ -52,13 +52,16 @@ class SalesListView(LoginRequiredMixin, TemplateView):
 
         context['categories'] = Category.objects.all()
         context['shops'] = Shop.objects.all()
+        context['users'] = User.objects.all()
         sales = Sale.objects.all()
 
         sale_cat_form_select = self.request.GET.get('sale_cat', '')
         sale_shop_form_select = self.request.GET.get('sale_shop', '')
+        sale_user_form_select = self.request.GET.get('sale_user', '')
 
         context['cat_pk'] = -1
         context['shop_pk'] = -1
+        context['user_pk'] = -1
 
         if sale_cat_form_select.isdigit() and sale_cat_form_select != '-1':
             sales = sales.filter(product__category_id=sale_cat_form_select)
@@ -67,6 +70,10 @@ class SalesListView(LoginRequiredMixin, TemplateView):
         if sale_shop_form_select.isdigit() and sale_shop_form_select != '-1':
             sales = sales.filter(product__shop_id=sale_shop_form_select)
             context['shop_pk'] = int(sale_shop_form_select)
+
+        if sale_user_form_select.isdigit() and sale_user_form_select != '-1':
+            sales = sales.filter(seller_id=sale_user_form_select)
+            context['user_pk'] = int(sale_user_form_select)
 
         context['sales'] = sales
         return context
@@ -80,9 +87,11 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         product = form.cleaned_data['product']
         amount = form.cleaned_data['amount']
+        form.instance.seller = self.request.user
         if product.amount >= amount:
-            self.object = form.save()
+            obj = form.save()
             product.amount -= amount
+            obj.save()
             product.save()
             return super().form_valid(form)
         else:

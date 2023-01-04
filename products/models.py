@@ -1,5 +1,9 @@
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+User = get_user_model()
 
 
 class Product(models.Model):
@@ -44,6 +48,7 @@ class Sale(models.Model):
     product = models.ForeignKey("Product", verbose_name=_("Sale product"), blank=False, null=False, related_name="sale_product", on_delete=models.PROTECT)
     amount = models.PositiveIntegerField(verbose_name=_("Sale amount"), blank=False, null=False)
     price = models.FloatField(verbose_name=_("Sale price"), blank=False, null=False)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = _("Sale")
