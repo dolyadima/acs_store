@@ -48,7 +48,7 @@ class Sale(models.Model):
     product = models.ForeignKey("Product", verbose_name=_("Sale product"), blank=False, null=False, related_name="sale_product", on_delete=models.PROTECT)
     amount = models.PositiveIntegerField(verbose_name=_("Sale amount"), blank=False, null=False)
     price = models.FloatField(verbose_name=_("Sale price"), blank=False, null=False)
-    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="new_user")
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = _("Sale")

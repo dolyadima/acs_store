@@ -81,15 +81,18 @@ class SalesListView(LoginRequiredMixin, TemplateView):
 
 class SaleCreateView(LoginRequiredMixin, CreateView):
     model = Sale
-    fields = ['product', 'amount', 'price', 'seller']
+    fields = ['product', 'amount', 'price']
     template_name = 'products/sale_create.html'
 
     def form_valid(self, form):
         product = form.cleaned_data['product']
         amount = form.cleaned_data['amount']
+        form.instance.seller = self.request.user
+        print(form.cleaned_data)
         if product.amount >= amount:
-            self.object = form.save()
+            obj = form.save()
             product.amount -= amount
+            obj.save()
             product.save()
             return super().form_valid(form)
         else:
