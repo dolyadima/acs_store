@@ -88,7 +88,6 @@ class SaleCreateView(LoginRequiredMixin, CreateView):
         product = form.cleaned_data['product']
         amount = form.cleaned_data['amount']
         form.instance.seller = self.request.user
-        print(form.cleaned_data)
         if product.amount >= amount:
             obj = form.save()
             product.amount -= amount
